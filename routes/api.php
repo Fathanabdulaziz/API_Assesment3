@@ -14,7 +14,6 @@ Route::delete('/tugas/{id}', [TugasController::class, 'destroy']);
 Route::put('/tugas/{id}', [TugasController::class, 'update']);
 
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
