@@ -8,12 +8,12 @@ class Tugas extends Model
 {
     protected $table = 'tugas';
     protected $primaryKey = 'id';
-   protected $fillable = ['email', 'namaTugas', 'gambar', 'deskripsiTugas'];
+   protected $fillable = ['email', 'namaTugas', 'image', 'deskripsiTugas'];
 
    public $timestamps = false;
 
     public function getGambarUrlAttribute()
     {
-        return asset('storage/' . $this->gambar);
+        return asset('storage/' . $this->image);
     }
 }

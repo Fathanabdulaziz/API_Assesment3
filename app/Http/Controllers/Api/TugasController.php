@@ -49,17 +49,17 @@ class TugasController extends Controller
     {
         $request->validate([
             'namaTugas' => 'required|string|max:255',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'deskripsiTugas' => 'required|date',
         ]);
 
-        $path = $request->file('gambar')->store('tugas', 'public');
+        $path = $request->file('image')->store('tugas', 'public');
         $email = $request->header("Authorization");
 
         $tugas = Tugas::create([
             'email' => '$email',
             'namaTugas' => $request->namaTugas,
-            'gambar' => $path,
+            'image' => $path,
             'deskripsiTugas' => $request->deskripsiTugas,
         ]);
 
@@ -77,7 +77,7 @@ class TugasController extends Controller
     public function destroy($id)
     {
         $tugas = Tugas::findOrFail($id);
-        Storage::disk('public')->delete($tugas->gambar);
+        Storage::disk('public')->delete($tugas->image);
         $tugas->delete();
 
         return response()->json(null, 204);
@@ -86,16 +86,16 @@ class TugasController extends Controller
 {
     $request->validate([
         'namaTugas' => 'sometimes|required|string|max:255',
-        'gambar' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+        'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         'deskripsiTugas' => 'sometimes|required|date',
     ]);
 
     $tugas = Tugas::findOrFail($id);
 
-    if ($request->hasFile('gambar')) {
-        Storage::disk('public')->delete($tugas->gambar);
-        $path = $request->file('gambar')->store('tugas', 'public');
-        $tugas->gambar = $path;
+    if ($request->hasFile('image')) {
+        Storage::disk('public')->delete($tugas->image);
+        $path = $request->file('image')->store('tugas', 'public');
+        $tugas->image = $path;
     }
 
     if ($request->has('namaTugas')) {

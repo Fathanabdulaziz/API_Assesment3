@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('email');
         $table->string('namaTugas');
-        $table->string('gambar');
+        $table->string('image');
         $table->string('deskripsiTugas');
     });
     }
