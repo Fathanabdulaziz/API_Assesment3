@@ -38,7 +38,7 @@ class TugasController extends Controller
         $request->validate([
             'namaTugas' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'deskripsiTugas' => 'required|date',
+            'deskripsiTugas' => 'required|string|max:255',
         ]);
 
         $path = $request->file('image')->store('tugas', 'public');
@@ -75,7 +75,7 @@ class TugasController extends Controller
     $request->validate([
         'namaTugas' => 'sometimes|required|string|max:255',
         'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-        'deskripsiTugas' => 'sometimes|required|date',
+        'deskripsiTugas' => 'sometimes|required|string|max:255',
     ]);
 
     $tugas = Tugas::findOrFail($id);
