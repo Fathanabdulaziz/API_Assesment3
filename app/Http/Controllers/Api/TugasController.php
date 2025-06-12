@@ -57,7 +57,7 @@ class TugasController extends Controller
         $email = $request->header("Authorization");
 
         $tugas = Tugas::create([
-            'email' => '$email',
+            'email' => $email,
             'namaTugas' => $request->namaTugas,
             'image' => $path,
             'deskripsiTugas' => $request->deskripsiTugas,
