@@ -10,40 +10,28 @@ use Illuminate\Support\Facades\Storage;
 class TugasController extends Controller
 {
    public function index(Request $request)
-{
-    $userId = $request->header('Authorization');
+    {
+        $userId = $request->header('Authorization');
 
-    if ($userId) {
-        // Ambil data tugas yang sesuai dengan email yang ada di header Authorization
-        $data = Tugas::where('email', $userId)
-            ->orWhereNull('email')  // Termasuk tugas yang email-nya null
-            ->get()
-            ->map(function ($item) use ($userId) {
-                // Tentukan apakah tugas ini milik user yang sedang login
-                $item->mine = $item->email === $userId ? 1 : 0;
-                return $item;
-            });
-    } else {
-        // Ambil data tugas yang tidak memiliki email
-        $data = Tugas::whereNull('email')
-            ->get()
-            ->map(function ($item) {
-                // Tugas ini tidak memiliki pemilik yang ditentukan
-                $item->mine = 0;
-                return $item;
-            });
+        if ($userId) {
+            $data = Tugas::where('email', $userId)
+                ->orWhereNull('email')
+                ->get()
+                ->map(function ($item) use ($userId) {
+                    $item->mine = $item->email === $userId ? 1 : 0;
+                    return $item;
+                });
+        } else {
+            $data = Tugas::whereNull('email')
+                ->get()
+                ->map(function ($item) {
+                    $item->mine = 0;
+                    return $item;
+                });
+        }
+
+        return response()->json($data);
     }
-
-    // Hanya ambil nama tugas untuk ditampilkan
-    $result = $data->map(function ($item) {
-        return [
-            'namaTugas' => $item->namaTugas,
-            'mine' => $item->mine,
-        ];
-    });
-
-    return response()->json($result);
-}
 
     public function store(Request $request)
     {
