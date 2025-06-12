@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TugasController;
 
 
-//
 Route::get('/tugas', [TugasController::class, 'index']);
 Route::post('/tugas/store', [TugasController::class, 'store']);
 Route::get('/tugas/{id}', [TugasController::class, 'show']);
