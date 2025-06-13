@@ -10,7 +10,7 @@ Route::get('/tugas', [TugasController::class, 'index']);
 Route::post('/tugas/store', [TugasController::class, 'store']);
 Route::get('/tugas/{id}', [TugasController::class, 'show']);
 Route::delete('/tugas/delete/{id}', [TugasController::class, 'destroy']);
-Route::post('/tugas/update/{id}', [TugasController::class, 'update']);
+Route::put('/tugas/update/{id}', [TugasController::class, 'update']);
 
 
 Route::get('/user', function (Request $request) {
