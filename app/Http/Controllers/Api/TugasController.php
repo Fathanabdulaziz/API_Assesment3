@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TugasController extends Controller
 {
-   public function index(Request $request)
+    public function index(Request $request)
     {
         $userId = $request->header('Authorization');
 
@@ -68,34 +68,40 @@ class TugasController extends Controller
         Storage::disk('public')->delete($tugas->image);
         $tugas->delete();
 
-        return response()->json(null, 204);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tugas berhasil dihapus'
+        ], 200);
     }
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'namaTugas' => 'sometimes|required|string|max:255',
-        'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-        'deskripsiTugas' => 'sometimes|required|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'namaTugas' => 'sometimes|required|string|max:255',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+            'deskripsiTugas' => 'sometimes|required|string|max:255',
+        ]);
 
-    $tugas = Tugas::findOrFail($id);
+        $tugas = Tugas::findOrFail($id);
 
-    if ($request->hasFile('image')) {
-        Storage::disk('public')->delete($tugas->image);
-        $path = $request->file('image')->store('tugas', 'public');
-        $tugas->image = $path;
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($tugas->image);
+            $path = $request->file('image')->store('tugas', 'public');
+            $tugas->image = $path;
+        }
+
+        if ($request->has('namaTugas')) {
+            $tugas->namaTugas = $request->namaTugas;
+        }
+
+        if ($request->has('deskripsiTugas')) {
+            $tugas->deskripsiTugas = $request->deskripsiTugas;
+        }
+
+        $tugas->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tugas berhasil diupdate'
+        ]);
     }
-
-    if ($request->has('namaTugas')) {
-        $tugas->namaTugas = $request->namaTugas;
-    }
-
-    if ($request->has('deskripsiTugas')) {
-        $tugas->deskripsiTugas = $request->deskripsiTugas;
-    }
-
-    $tugas->save();
-
-    return response()->json($tugas);
-}
 }
